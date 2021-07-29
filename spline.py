@@ -1,5 +1,5 @@
 import pygame
-from point import Point
+from point import Point, GetDistance
 from random import randint
 from constants import Width, Height, screen_offset, black, white
 from math import sqrt, pow, sin, cos, pi
@@ -12,6 +12,7 @@ class Spline:
         self.lineWidth = 5
         self.lineColor = white
         self.move = 0
+        self.length = 0
 
     def CreatePoints(self, n, showLabel=False):
         for i in range(n):
@@ -51,6 +52,19 @@ class Spline:
 
         return (_x, _y)
 
+    def CalculateSegmentLength(self, node, loop=False):
+        length = 0
+        # node /= self.resolution
+        step_size = 1/self.resolution
+        old_point = self.GetSplinePoints(node, loop)
+        # new_point = None
+        for i in range(self.resolution):
+            new_point = self.GetSplinePoints(node + i/self.resolution, loop)
+            length += GetDistance(new_point[0], new_point[1], old_point[0], old_point[1])
+            old_point = new_point
+
+        return length
+
     def GetSplineGradient(self, t, loop=False):
 
         t = t/self.resolution
@@ -81,15 +95,25 @@ class Spline:
 
         return (_x, _y)
 
+    def GetNormalizedOffset(p):
+        index = 0
+        while p > self.points[index].length:
+            p -= self.points[index].length
+            index += 1
+        return (index + (p / self.points[index].length))
+
     def Draw(self, screen, clicked):
         keys = pygame.key.get_pressed()
-
+        # self.length = 0
         for i in range(self.resolution * len(self.points)):
             x, y = self.GetSplinePoints(i, True)
             pygame.draw.rect(screen, self.lineColor, [int(x), int(y), self.lineWidth, self.lineWidth])
 
-        for point in self.points:
-            point.update(clicked)
-            point.Draw(screen)
+        for i in range(len(self.points)):
+            self.points[i].length = self.CalculateSegmentLength(i , True)
+            self.length += self.points[i].length
+            self.points[i].update(clicked)
+            self.points[i].Draw(screen)
+            #print(self.points[i].length)
 
-# def calculate
+        # print(self.length)

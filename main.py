@@ -46,13 +46,14 @@ while run:
         CarPosition += speed
     elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
         CarPosition -= speed
+    curve.length = 0
 
     if CarPosition >= len(curve.points) * curve.resolution:
         CarPosition -= len(curve.points) * curve.resolution
     if CarPosition < 0:
         CarPosition += len(curve.points) * curve.resolution
 
-    p1 = curve.GetSplinePoints(CarPosition, True)
+    p1 = curve.GetSplinePoints(CarPosition , True)
     g1 = curve.GetSplineGradient(CarPosition, True)
 
     angle = atan2(-g1[1], g1[0])
