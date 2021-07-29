@@ -14,6 +14,7 @@ class Point:
         self.label = None
         self.labelColor = green
         self.fontSize = 25
+        self.length = 0
 
     def parseToInt(self):
         return (int(self.x), int(self.y))

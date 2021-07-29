@@ -25,13 +25,12 @@ CarPosition = 0.0
 speed = 1
 
 #  -- create new Spline
-# curve = Spline()
-# curve.CreatePoints(10, True)
+curve = Spline()
+curve.CreatePoints(10, True)
 
 # or
-
 # load the saved spline
-curve = pickle.load(open(filename, 'rb'))
+# curve = pickle.load(open(filename, 'rb'))
 
 MouseClicked = False
 run = True

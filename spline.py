@@ -2,21 +2,21 @@ import pygame
 from point import Point
 from random import randint
 from constants import Width, Height, screen_offset, black, white
-from math import sqrt, pow
+from math import sqrt, pow, sin, cos, pi
 
 class Spline:
     def __init__(self):
         self.points = []
         self.pointRadius = 10
-        self.resolution = 20
+        self.resolution = 40
         self.lineWidth = 5
         self.lineColor = white
         self.move = 0
 
     def CreatePoints(self, n, showLabel=False):
         for i in range(n):
-            x = i * Width//n
-            y = randint(screen_offset, Height-screen_offset)
+            x = 500 * sin( i/n * pi * 2) + Width//2
+            y = 500 * cos( i/n * pi * 2) + Height//2
             point = Point(x, y, self.pointRadius)
             if showLabel:
                 point.label = "P" + str(i)
@@ -91,3 +91,5 @@ class Spline:
         for point in self.points:
             point.update(clicked)
             point.Draw(screen)
+
+# def calculate
